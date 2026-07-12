@@ -1,6 +1,6 @@
-<div align="center">
+<div>
 
-# 🧠 OmniResearch AI
+# OmniResearchAI
 
 ### AI-Powered Multi-Agent Research Assistant using Parent–Child RAG, Hybrid Retrieval & Real-Time Web Search
 
@@ -10,7 +10,6 @@
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20Database-6C63FF)](https://www.trychroma.com/)
 [![Gemini](https://img.shields.io/badge/Gemini-LLM-4285F4)](https://ai.google.dev/)
 [![Tavily](https://img.shields.io/badge/Tavily-Web%20Search-0EA5E9)](https://tavily.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 </div>
 
@@ -27,7 +26,7 @@
 
 ## 📖 Overview
 
-OmniResearch AI is a **production-ready Multi-Agent Retrieval-Augmented Generation (RAG) system** designed to answer user queries by combining information from uploaded documents and the live web.
+OmniResearchAI is a **production-ready Multi-Agent Retrieval-Augmented Generation (RAG) system** designed to answer user queries by combining information from uploaded documents and the live web.
 
 Instead of relying solely on semantic retrieval, the system implements a **Parent–Child RAG architecture** that preserves document context while enabling fine-grained retrieval. A dedicated **Router Agent** intelligently decides whether a query should use PDF knowledge, web search, or both, allowing the assistant to generate accurate, citation-backed responses.
 
