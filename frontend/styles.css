@@ -1,0 +1,563 @@
+/* ==========================================================
+   OmniResearchAI
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #2563EB;
+    --primary-hover: #1D4ED8;
+    --bg: #F7F9FC;
+    --card: #FFFFFF;
+    --text: #111827;
+    --text-secondary: #6B7280;
+    --border: #E5E7EB;
+    --success: #16A34A;
+    --success-bg: #ECFDF3;
+    --danger: #DC2626;
+    --danger-bg: #FEF2F2;
+    --radius: 18px;
+    --shadow: 0 1px 2px rgba(17, 24, 39, 0.03), 0 6px 20px rgba(17, 24, 39, 0.05);
+    --shadow-hover: 0 4px 10px rgba(17, 24, 39, 0.04), 0 14px 30px rgba(17, 24, 39, 0.08);
+}
+
+/* ---------------------------------------------------------
+   Base
+   --------------------------------------------------------- */
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+}
+
+.stApp {
+    background: var(--bg);
+}
+
+.block-container {
+    padding-top: 2.2rem;
+    padding-bottom: 3.5rem;
+    max-width: 1140px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    font-weight: 800;
+}
+
+#MainMenu, footer, header[data-testid="stHeader"] {
+    background: transparent;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #D1D9E6;
+    border-radius: 8px;
+}
+
+/* ---------------------------------------------------------
+   Sidebar — fixed, non-scrollable, 100vh, content fills space
+   --------------------------------------------------------- */
+
+[data-testid="stSidebar"] {
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    min-width: 300px !important;
+    max-width: 300px !important;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0.9rem 1.1rem;
+}
+
+/* Streamlit sidebar */
+
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    gap: 0 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+    margin: 0;
+}
+
+.sb-brand-box {
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg);
+    padding: 14px 16px;
+}
+
+.sb-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+}
+
+.sb-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0.55rem 0;
+}
+
+.sb-heading {
+    font-size: 0.64rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    margin: 0 0 0.35rem 0;
+}
+
+.sb-text {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.sb-tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.sb-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 7px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.sb-dev-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.7rem 0;
+}
+
+.sb-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sb-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.sb-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.sb-link svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--primary);
+}
+
+.sb-link-sep {
+    width: 1px;
+    height: 14px;
+    background: var(--border);
+}
+
+/* ---------------------------------------------------------
+   Hero
+   --------------------------------------------------------- */
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hero-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.02em;
+    transform: translateX(-8px);
+}
+
+.hero-title span {
+    color: var(--primary);
+}
+
+.hero-subtitle {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 4px 0 0 0;
+    font-weight: 500;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.79rem;
+    font-weight: 600;
+}
+
+.badge-connected {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #BBF0CC;
+}
+
+.badge-disconnected {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #FBD5D5;
+}
+
+.badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+/* ---------------------------------------------------------
+   Section titles
+   --------------------------------------------------------- */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.9rem 0;
+}
+
+.section-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: #EEF3FE;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.section-caption {
+    font-size: 0.81rem;
+    color: var(--text-secondary);
+    margin: -0.5rem 0 0.9rem 37px;
+}
+
+/* ---------------------------------------------------------
+   Cards (native Streamlit bordered containers)
+   --------------------------------------------------------- */
+
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border-radius: var(--radius) !important;
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"] > div {
+    border-radius: var(--radius) !important;
+    border-color: var(--border) !important;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"] > div:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+/* ---------------------------------------------------------
+   Metric cards
+   --------------------------------------------------------- */
+
+.metric-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+}
+
+.metric-label {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* ---------------------------------------------------------
+   Buttons
+   --------------------------------------------------------- */
+
+.stButton > button {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 0.55rem 1.2rem;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.stButton > button:hover {
+    background: var(--primary-hover);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.stButton > button:active {
+    transform: translateY(0);
+}
+
+.stButton > button:focus:not(:active) {
+    color: #fff;
+}
+
+button[kind="secondary"] {
+    background: var(--card) !important;
+    color: var(--danger) !important;
+    border: 1px solid var(--border) !important;
+}
+
+button[kind="secondary"]:hover {
+    background: var(--danger-bg) !important;
+    border-color: #FBD5D5 !important;
+    color: var(--danger) !important;
+}
+
+/* ---------------------------------------------------------
+   Inputs
+   --------------------------------------------------------- */
+
+.stTextArea textarea, .stTextInput input {
+    border-radius: 12px !important;
+    border-color: var(--border) !important;
+    font-size: 0.92rem !important;
+}
+
+.stTextArea textarea:focus, .stTextInput input:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 1px var(--primary) !important;
+}
+
+[data-testid="stFileUploaderDropzone"] {
+    background: var(--bg);
+    border-radius: 14px;
+    border: 1.5px dashed var(--border);
+    transition: border-color 0.2s ease;
+    min-height: 138px;
+}
+
+[data-testid="stFileUploaderDropzone"]:hover {
+    border-color: var(--primary);
+}
+
+/* ---------------------------------------------------------
+   Reference badges
+   --------------------------------------------------------- */
+
+.ref-group-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin: 0.9rem 0 0.55rem 0;
+}
+
+.ref-group-label:first-child {
+    margin-top: 0;
+}
+
+.ref-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ref-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    font-size: 0.81rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.ref-badge:hover {
+    border-color: var(--primary);
+    background: #EEF3FE;
+}
+
+.ref-badge a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.ref-badge a:hover {
+    text-decoration: underline;
+}
+
+.ref-empty {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ---------------------------------------------------------
+   Summary card
+   --------------------------------------------------------- */
+
+.summary-text {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin: 0;
+}
+
+/* ---------------------------------------------------------
+   Pipeline card
+   --------------------------------------------------------- */
+
+.pipeline-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.pipeline-item {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+.pipeline-item-label {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.pipeline-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.87rem;
+    font-weight: 700;
+}
+
+.pipeline-status.on { color: var(--success); }
+.pipeline-status.off { color: var(--text-secondary); }
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.pipeline-decision-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.pipeline-decision-box {
+    font-size: 0.87rem;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    border-left: 3px solid var(--primary);
+    padding: 12px 15px;
+    border-radius: 0 10px 10px 0;
+}
+
+/* ---------------------------------------------------------
+   Answer body
+   --------------------------------------------------------- */
+
+.answer-body {
+    font-size: 0.94rem;
+    line-height: 1.75;
+    color: var(--text);
+}
+
+.answer-body h1, .answer-body h2, .answer-body h3 {
+    font-weight: 700;
+}
+
+.answer-body table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.answer-body th, .answer-body td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    font-size: 0.88rem;
+}
+
+.answer-body code {
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 0.85em;
+}
+
+/* ---------------------------------------------------------
+   Empty state
+   --------------------------------------------------------- */
+
+.empty-state {
+    text-align: center;
+    padding: 1.4rem 0;
+    color: var(--text-secondary);
+    font-size: 0.87rem;
+}
