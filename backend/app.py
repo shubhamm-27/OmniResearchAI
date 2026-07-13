@@ -74,9 +74,6 @@ def clear_directory_contents(path):
 
 clear_directory_contents(UPLOAD_FOLDER)
 
-clear_directory_contents(CHROMA_DB_PATH)
-
-
 # ==========================================================
 # Initialize Core Components
 # ==========================================================
@@ -246,87 +243,45 @@ async def ask_question(request: QuestionRequest):
 # ==========================================================
 
 @app.post("/reset")
-
 async def reset_database():
 
     try:
 
-        # ----------------------------------------------
-        # Uploads — clear contents in place. 
-        # ----------------------------------------------
-
-        clear_directory_contents(UPLOAD_FOLDER)
-
+        # Reset ChromaDB collection
         try:
+            orchestrator.rag.client.delete_collection(COLLECTION_NAME)
+        except Exception:
+            pass
 
-            clear_directory_contents(CHROMA_DB_PATH)
+        orchestrator.rag.collection = orchestrator.rag.client.create_collection(
+            name=COLLECTION_NAME
+        )
 
-            import chromadb
+        print("Reset: ChromaDB collection recreated.")
 
-            new_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
-
-            new_collection = new_client.create_collection(name=COLLECTION_NAME)
-
-            orchestrator.rag.client = new_client
-
-            orchestrator.rag.collection = new_collection
-
-            print("Reset: chromadb/ contents cleared and collection recreated.")
-
-        except Exception as folder_wipe_error:
-
-            print(
-
-                f"Reset: could not clear chromadb/ contents "
-                f"({folder_wipe_error}). Falling back to clearing the "
-                f"collection via the client API — knowledge base is "
-                f"still fully emptied."
-            )
-
-            # orchestrator.rag.client was never touched above, so it
-            # is still valid here regardless of which branch failed.
-
-            try:
-                orchestrator.rag.client.delete_collection(COLLECTION_NAME)
-            except Exception:
-                pass
-
-            orchestrator.rag.collection = orchestrator.rag.client.create_collection(
-                name=COLLECTION_NAME
-            )
-
-        # ----------------------------------------------
-        # Parent Store — clear both the file on disk and
-        # the in-memory dict.
-        # ----------------------------------------------
-
+        # Reset parent store
         with open(PARENT_STORE_PATH, "w", encoding="utf-8") as f:
             f.write("{}")
 
         orchestrator.rag.parent_store = {}
 
         # Reset uploaded documents
-
         orchestrator.uploaded_documents = []
 
-        # Clear memory
-
+        # Clear conversation memory
         orchestrator.memory.clear()
 
+        # Clear uploaded PDFs
+        clear_directory_contents(UPLOAD_FOLDER)
+
         return {
-
             "status": "success",
-
             "message": "Knowledge base reset successfully."
-
         }
 
     except Exception as e:
 
         raise HTTPException(
-
             status_code=500,
-
             detail=str(e)
-
         )
