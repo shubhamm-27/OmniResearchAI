@@ -76,7 +76,7 @@ MAX_PARENT_CONTEXT = 6
 # Runtime Storage
 # ==========================================================
 
-if os.getenv("RAILWAY_ENVIRONMENT"):
+if os.getenv("PORT"):
     CHROMA_DB_PATH = "/tmp/chromadb"
     PARENT_STORE_PATH = "/tmp/parent_store.json"
 else:
