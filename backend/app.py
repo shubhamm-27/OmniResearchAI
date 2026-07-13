@@ -178,6 +178,13 @@ async def upload_documents(
 
         )
 
+        del documents
+        del file_paths
+
+        import gc
+        gc.collect()
+
+
         return {
 
             "status": "success",

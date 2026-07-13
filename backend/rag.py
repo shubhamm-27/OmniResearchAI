@@ -6,6 +6,7 @@ import json
 import os
 import re
 import uuid
+import torch
 
 import chromadb
 
@@ -37,9 +38,13 @@ class RAGPipeline:
 
         self.embedding_model = SentenceTransformer(
 
-            EMBEDDING_MODEL
+            EMBEDDING_MODEL,
+
+            device="cpu"
 
         )
+
+        torch.set_num_threads(1)
 
         # ==================================================
         # Parent Splitter
@@ -444,7 +449,9 @@ class RAGPipeline:
 
             ],
 
-            n_results=TOP_K_CHILDREN
+            n_results=TOP_K_CHILDREN,
+
+            include=["documents", "metadatas", "distances"]
 
         )
 
@@ -535,6 +542,9 @@ class RAGPipeline:
     # ======================================================
 
     def retrieve_parent_chunks(self, results, mentioned_source=None):
+
+        # Reload parent store only when needed
+        self.parent_store = self.load_parent_store()
 
         retrieved_parents = []
         visited = set()
@@ -904,6 +914,18 @@ class RAGPipeline:
         )
 
         # -----------------------------------------------
+        # Free embedding vectors from RAM
+        # -----------------------------------------------
+
+        for chunk in child_chunks:
+
+            chunk.pop("embedding", None)
+
+        import gc
+
+        gc.collect()
+
+        # -----------------------------------------------
         # Save Parent Store
         # -----------------------------------------------
 
@@ -915,6 +937,12 @@ class RAGPipeline:
         print(f"Child Chunks  : {len(child_chunks)}")
 
         print("==================================================\n")
+
+        # Free parent store from memory
+        self.parent_store = {}
+
+        import gc
+        gc.collect()
 
 
     # ======================================================

@@ -64,9 +64,9 @@ CHILD_CHUNK_OVERLAP = 75
 # Retrieval Configuration
 # ==========================================================
 
-TOP_K_CHILDREN = 30
+TOP_K_CHILDREN = 12
 
-MAX_PARENT_CONTEXT = 6
+MAX_PARENT_CONTEXT = 4
 
 # ==========================================================
 # ChromaDB

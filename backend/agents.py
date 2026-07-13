@@ -448,6 +448,12 @@ class AgentOrchestrator:
 
         )
 
+        pdf_output = None
+        web_output = None
+
+        import gc
+        gc.collect()
+
         print("\n✅ Pipeline Finished")
 
         return {
