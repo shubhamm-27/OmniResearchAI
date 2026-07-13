@@ -368,9 +368,7 @@ class RAGPipeline:
     def store_embeddings(self, child_chunks):
 
         existing_ids = set(
-
             self.collection.get(include=[])["ids"]
-
         )
 
         new_chunks = 0
@@ -378,54 +376,49 @@ class RAGPipeline:
         for chunk in child_chunks:
 
             if chunk["id"] in existing_ids:
-
                 continue
 
-            self.collection.add(
+            try:
 
-                ids=[
+                self.collection.add(
 
-                    chunk["id"]
+                    ids=[
+                        chunk["id"]
+                    ],
 
-                ],
+                    embeddings=[
+                        chunk["embedding"]
+                    ],
 
-                embeddings=[
+                    documents=[
+                        chunk["text"]
+                    ],
 
-                    chunk["embedding"]
+                    metadatas=[{
+                        "source": str(chunk["source"]),
+                        "parent_id": str(chunk["parent_id"]),
+                        "parent_number": int(chunk["parent_number"]),
+                        "total_parents": int(chunk["total_parents"]),
+                        "child_number": int(chunk["child_number"]),
+                        "total_children": int(chunk["total_children"])
+                    }]
 
-                ],
+                )
 
-                documents=[
+                new_chunks += 1
 
-                    chunk["text"]
+            except Exception as e:
 
-                ],
+                print("\n============================")
+                print("CHROMADB INSERT ERROR")
+                print(type(e))
+                print(e)
+                print(chunk)
+                print("============================\n")
 
-                metadatas=[{
+                raise
 
-                    "source": chunk["source"],
-
-                    "parent_id": chunk["parent_id"],
-
-                    "parent_number": chunk["parent_number"],
-
-                    "total_parents": chunk["total_parents"],
-
-                    "child_number": chunk["child_number"],
-
-                    "total_children": chunk["total_children"]
-
-                }]
-
-            )
-
-            new_chunks += 1
-
-        print(
-
-            f"\nStored {new_chunks} Child Chunks in ChromaDB."
-
-        )
+        print(f"\nStored {new_chunks} Child Chunks in ChromaDB.")
 
 
 # ==========================================================
