@@ -6,7 +6,6 @@ import json
 import os
 import re
 import uuid
-import torch
 
 import chromadb
 
@@ -44,7 +43,6 @@ class RAGPipeline:
 
         )
 
-        torch.set_num_threads(1)
 
         # ==================================================
         # Parent Splitter
