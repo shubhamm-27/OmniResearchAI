@@ -69,6 +69,12 @@ class RAGPipeline:
         # ChromaDB
         # ==================================================
 
+        print("=" * 60)
+        print(f"CHROMA_DB_PATH: {CHROMA_DB_PATH}")
+        print(f"RAILWAY_PUBLIC_DOMAIN: {os.getenv('RAILWAY_PUBLIC_DOMAIN')}")
+        print(f"PORT: {os.getenv('PORT')}")
+        print("=" * 60)
+
         self.client = chromadb.PersistentClient(
 
             path=CHROMA_DB_PATH
