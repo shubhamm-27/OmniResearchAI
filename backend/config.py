@@ -72,6 +72,15 @@ MAX_PARENT_CONTEXT = 6
 # ChromaDB
 # ==========================================================
 
-CHROMA_DB_PATH = "./chromadb"
+# ==========================================================
+# Runtime Storage
+# ==========================================================
+
+if os.getenv("RAILWAY_ENVIRONMENT"):
+    CHROMA_DB_PATH = "/tmp/chromadb"
+    PARENT_STORE_PATH = "/tmp/parent_store.json"
+else:
+    CHROMA_DB_PATH = "./chromadb"
+    PARENT_STORE_PATH = "./parent_store.json"
 
 COLLECTION_NAME = "research_documents"

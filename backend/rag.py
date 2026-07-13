@@ -21,6 +21,7 @@ from config import (
     CHILD_CHUNK_OVERLAP,
     TOP_K_CHILDREN,
     MAX_PARENT_CONTEXT,
+    PARENT_STORE_PATH,
     CHROMA_DB_PATH,
     COLLECTION_NAME
 )
@@ -97,17 +98,7 @@ class RAGPipeline:
         # Parent Store File
         # ==================================================
 
-        self.parent_store_file = (
-
-            os.path.join(
-
-                os.path.dirname(__file__),
-
-                "parent_store.json"
-
-            )
-
-        )
+        self.parent_store_file = PARENT_STORE_PATH
 
         with open(
 
