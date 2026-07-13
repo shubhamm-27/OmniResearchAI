@@ -24,7 +24,7 @@ from pydantic import BaseModel
 
 from pdf_parser import PDFParser
 from agents import AgentOrchestrator
-from config import COLLECTION_NAME, CHROMA_DB_PATH
+from config import COLLECTION_NAME, CHROMA_DB_PATH, PARENT_STORE_PATH
 
 
 # ==========================================================
@@ -300,8 +300,7 @@ async def reset_database():
         # the in-memory dict.
         # ----------------------------------------------
 
-        with open("parent_store.json", "w", encoding="utf-8") as f:
-
+        with open(PARENT_STORE_PATH, "w", encoding="utf-8") as f:
             f.write("{}")
 
         orchestrator.rag.parent_store = {}
