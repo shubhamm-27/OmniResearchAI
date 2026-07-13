@@ -49,8 +49,7 @@ class AgentOrchestrator:
             model=GEMINI_MODEL,
             google_api_key=GOOGLE_API_KEY,
             temperature=TEMPERATURE,
-            timeout=30,       
-            max_retries=1,    
+            timeout=120,
         )
 
         self.tavily = TavilyClient(api_key=TAVILY_API_KEY)
@@ -303,7 +302,12 @@ class AgentOrchestrator:
 
         )
 
-        print(f"Prompt length: {len(prompt)} characters")
+        print("=" * 60)
+        print(f"Prompt chars      : {len(prompt)}")
+        print(f"PDF context chars : {len(pdf_output['context'])}")
+        print(f"Web context chars : {len(web_output['context'])}")
+        print(f"History chars     : {len(conversation_history)}")
+        print("=" * 60)
 
        
         
