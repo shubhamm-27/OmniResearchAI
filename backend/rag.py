@@ -36,9 +36,7 @@ class RAGPipeline:
 
         self.embedding_model = SentenceTransformer(
 
-            EMBEDDING_MODEL,
-
-            local_files_only=True
+            EMBEDDING_MODEL
 
         )
 
