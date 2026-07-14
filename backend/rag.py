@@ -7,6 +7,7 @@ import re
 import uuid
 
 import os
+import gc
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -29,7 +30,8 @@ from config import (
     MAX_PARENT_CONTEXT,
     PARENT_STORE_PATH,
     CHROMA_DB_PATH,
-    COLLECTION_NAME
+    COLLECTION_NAME,
+    EMBEDDING_BATCH_SIZE
 )
 
 
@@ -896,40 +898,34 @@ class RAGPipeline:
         )
 
         # -----------------------------------------------
-        # Embeddings
+        # Generate + Store Embeddings in Small Batches
+        # (Reduces Railway RAM usage)
         # -----------------------------------------------
 
-        print("\nGenerating Embeddings...")
+        print("\nGenerating & Storing Embeddings in Batches...")
 
-        child_chunks = self.generate_embeddings(
+        BATCH_SIZE = EMBEDDING_BATCH_SIZE
 
-            child_chunks
+        for start in range(0, len(child_chunks), BATCH_SIZE):
 
-        )
+            # Take only 50 child chunks at a time
+            batch = child_chunks[start:start + BATCH_SIZE]
 
-        # -----------------------------------------------
-        # Store in ChromaDB
-        # -----------------------------------------------
+            # Generate embeddings only for this batch
+            batch = self.generate_embeddings(batch)
 
-        print("\nStoring Embeddings...")
+            # Store immediately in ChromaDB
+            self.store_embeddings(batch)
 
-        self.store_embeddings(
+            # Remove embeddings from RAM after storing
+            for chunk in batch:
+                chunk.pop("embedding", None)
 
-            child_chunks
+            # Delete batch and force garbage collection
+            del batch
 
-        )
+            gc.collect()
 
-        # -----------------------------------------------
-        # Free embedding vectors from RAM
-        # -----------------------------------------------
-
-        for chunk in child_chunks:
-
-            chunk.pop("embedding", None)
-
-        import gc
-
-        gc.collect()
 
         # -----------------------------------------------
         # Save Parent Store
