@@ -3,9 +3,15 @@
 # ==========================================================
 
 import json
-import os
 import re
 import uuid
+
+import os
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
 
 import chromadb
 
@@ -344,7 +350,9 @@ class RAGPipeline:
 
             convert_to_numpy=True,
 
-            show_progress_bar=True
+            show_progress_bar=True,
+
+            batch_size=4
 
         )
 
@@ -936,13 +944,12 @@ class RAGPipeline:
 
         print("==================================================\n")
 
-        # Free parent store from memory
-        self.parent_store = {}
+        del child_chunks
+        del parent_chunks
 
-        import gc
         gc.collect()
 
-
+       
     # ======================================================
     # Clean Text
     # ======================================================

@@ -170,20 +170,10 @@ async def upload_documents(
 
         )
 
-        orchestrator.uploaded_documents.extend(
-
-            os.path.basename(path)
-
-            for path in file_paths
-
-        )
-
-        del documents
-        del file_paths
-
-        import gc
-        gc.collect()
-
+        orchestrator.uploaded_documents = sorted(set(
+            orchestrator.uploaded_documents +
+            [os.path.basename(path) for path in file_paths]
+        ))
 
         return {
 
