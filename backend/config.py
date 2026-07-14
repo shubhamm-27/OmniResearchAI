@@ -4,7 +4,7 @@
 #
 # 1. API Keys
 # 2. LLM Settings
-# 3. Embedding Model
+# 3. Embedding
 # 4. Parent-Child Chunking
 # 5. Retrieval
 # 6. ChromaDB

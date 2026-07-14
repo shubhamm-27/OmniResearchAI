@@ -352,9 +352,7 @@ class RAGPipeline:
 
             convert_to_numpy=True,
 
-            show_progress_bar=True,
-
-            batch_size=4
+            show_progress_bar=True
 
         )
 
@@ -867,17 +865,9 @@ class RAGPipeline:
 
         print("\nCreating Parent Chunks...")
 
-        parent_chunks = self.create_parent_chunks(
+        parent_chunks = self.create_parent_chunks(documents)
 
-            documents
-
-        )
-
-        print(
-
-            f"Created {len(parent_chunks)} Parent Chunks."
-
-        )
+        print(f"Created {len(parent_chunks)} Parent Chunks.")
 
         # -----------------------------------------------
         # Child Chunks
@@ -885,50 +875,37 @@ class RAGPipeline:
 
         print("\nCreating Child Chunks...")
 
-        child_chunks = self.create_child_chunks(
+        child_chunks = self.create_child_chunks(parent_chunks)
 
-            parent_chunks
-
-        )
-
-        print(
-
-            f"Created {len(child_chunks)} Child Chunks."
-
-        )
+        print(f"Created {len(child_chunks)} Child Chunks.")
 
         # -----------------------------------------------
-        # Generate + Store Embeddings in Small Batches
-        # (Reduces Railway RAM usage)
+        # Embeddings
         # -----------------------------------------------
 
-        print("\nGenerating & Storing Embeddings in Batches...")
+        print("\nGenerating Embeddings...")
 
-        BATCH_SIZE = EMBEDDING_BATCH_SIZE
-
-        for start in range(0, len(child_chunks), BATCH_SIZE):
-
-            # Take only 50 child chunks at a time
-            batch = child_chunks[start:start + BATCH_SIZE]
-
-            # Generate embeddings only for this batch
-            batch = self.generate_embeddings(batch)
-
-            # Store immediately in ChromaDB
-            self.store_embeddings(batch)
-
-            # Remove embeddings from RAM after storing
-            for chunk in batch:
-                chunk.pop("embedding", None)
-
-            # Delete batch and force garbage collection
-            del batch
-
-            gc.collect()
-
+        child_chunks = self.generate_embeddings(child_chunks)
 
         # -----------------------------------------------
-        # Save Parent Store
+        # Store in ChromaDB
+        # -----------------------------------------------
+
+        print("\nStoring Embeddings...")
+
+        self.store_embeddings(child_chunks)
+
+        # -----------------------------------------------
+        # Free embedding vectors from RAM
+        # -----------------------------------------------
+
+        for chunk in child_chunks:
+            chunk.pop("embedding", None)
+
+        gc.collect()
+
+        # -----------------------------------------------
+        # Finish
         # -----------------------------------------------
 
         print("\n==================================================")
@@ -945,7 +922,6 @@ class RAGPipeline:
 
         gc.collect()
 
-       
     # ======================================================
     # Clean Text
     # ======================================================
