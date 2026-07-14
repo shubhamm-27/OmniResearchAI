@@ -1,51 +1,53 @@
-<div>
-
 # OmniResearchAI
 
-### AI-Powered Multi-Agent Research Assistant using Parent–Child RAG, Hybrid Retrieval & Real-Time Web Search
+### AI-Powered Multi-Agent Research Assistant with Parent–Child RAG & Real-Time Web Search
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20Database-6C63FF)](https://www.trychroma.com/)
 [![Gemini](https://img.shields.io/badge/Gemini-LLM-4285F4)](https://ai.google.dev/)
+[![Sentence%20Transformers](https://img.shields.io/badge/Sentence%20Transformers-all--MiniLM--L6--v2-blue)](https://www.sbert.net/)
 [![Tavily](https://img.shields.io/badge/Tavily-Web%20Search-0EA5E9)](https://tavily.com/)
 
-</div>
+---
+
+# 📖 Overview
+
+OmniResearchAI is a **production-ready Multi-Agent Retrieval-Augmented Generation (RAG) system** that answers user queries by intelligently combining knowledge from uploaded PDF documents with live information from the web.
+
+Unlike traditional RAG systems that directly retrieve isolated chunks, OmniResearchAI implements a **Parent–Child Retrieval Pipeline**, where small child chunks are embedded for precise semantic search while larger parent chunks preserve contextual information for the language model.
+
+A dedicated **Router Agent** determines whether a question should be answered using:
+
+- 📄 Uploaded PDF documents
+- 🌐 Live web search
+- 🔀 Both sources together
+
+The retrieved context is passed to **Google Gemini**, while a dedicated **Citation Agent** attaches document and web references to every generated response.
+
+Built with **FastAPI**, **Streamlit**, **Sentence Transformers**, **ChromaDB**, **Gemini**, and **Tavily**, OmniResearchAI is suitable for:
+
+- Academic research
+- Technical documentation
+- Company knowledge bases
+- Scientific literature
+- Multi-document question answering
 
 ---
 
-## 🚀 Live Demo
-
-| Service | URL |
-|----------|-----|
-| 🌐 Frontend | **Coming Soon** |
-| ⚡ Backend API | **Coming Soon** |
-
----
-
-## 📖 Overview
-
-OmniResearchAI is a **production-ready Multi-Agent Retrieval-Augmented Generation (RAG) system** designed to answer user queries by combining information from uploaded documents and the live web.
-
-Instead of relying solely on semantic retrieval, the system implements a **Parent–Child RAG architecture** that preserves document context while enabling fine-grained retrieval. A dedicated **Router Agent** intelligently decides whether a query should use PDF knowledge, web search, or both, allowing the assistant to generate accurate, citation-backed responses.
-
-The application is built using **FastAPI**, **Streamlit**, **ChromaDB**, **Gemini**, and **Tavily**, making it suitable for research, academic documents, technical manuals, and knowledge-intensive workflows.
-
----
-
-## ✨ Key Features
+# ✨ Key Features
 
 - 🤖 Multi-Agent Architecture
 - 📄 Parent–Child RAG Pipeline
-- 🔍 Hybrid Retrieval (Semantic + BM25)
+- 🧠 Dense Semantic Retrieval
 - 🌐 Real-Time Web Search
+- 🧭 Intelligent Query Routing
 - 📚 Citation-Aware Responses
 - 📂 Multi-PDF Knowledge Base
 - 💬 Conversational Memory
 - ⚡ FastAPI Backend
-- 🎨 Streamlit Interface
-- 🚀 Ready for Cloud Deployment
+- 🎨 Streamlit Frontend
 
 ---
 
@@ -57,7 +59,7 @@ The application is built using **FastAPI**, **Streamlit**, **ChromaDB**, **Gemin
 
 ---
 
-## 🔄 Hybrid Search
+## 🔄 Hybrid Knowledge Retrieval
 
 Upload multiple PDFs and seamlessly combine document knowledge with real-time web search.
 
@@ -83,12 +85,13 @@ For queries requiring recent or external knowledge, the Web Agent retrieves live
 
 ## 📚 Citation Support
 
-Every response is accompanied by source references, improving transparency and trustworthiness.
+Every generated response is accompanied by document and web references, improving transparency and trustworthiness.
 
 ![Citations](screenshots/citations.png)
+
 # 🏗️ System Architecture
 
-The application follows a modular **Multi-Agent Architecture**, where every agent is responsible for a single task. This separation improves scalability, maintainability, and response quality.
+The application follows a modular **Multi-Agent Architecture**, where each agent is responsible for a single task. This separation improves scalability, maintainability, and answer quality.
 
 ```mermaid
 flowchart LR
@@ -103,27 +106,27 @@ C --> D[🧠 Router Agent]
 
 D -->|PDF Query| E[📄 PDF Agent]
 
-D -->|Web Query| F[🌐 Web Agent]
+D -->|Hybrid Query| G[🔀 Hybrid Agent]
 
-D -->|Hybrid Query| G[🔀 Hybrid Retrieval]
+D -->|Web Query| F[🌐 Web Agent]
 
 E --> H[(📚 ChromaDB)]
 
 F --> I[(🌍 Tavily Search)]
 
+G --> H
+G --> I
+
 H --> J[🤖 Answer Agent]
 
 I --> J
 
-G --> J
-
-J --> K[📑 Citation Agent]
+J --> K[📚 Citation Agent]
 
 K --> L[✅ Final Response]
 
 L --> B
 ```
-
 ---
 
 # 🤖 Multi-Agent Workflow
@@ -133,7 +136,7 @@ Every user query passes through an intelligent routing system before answer gene
 ```mermaid
 flowchart TD
 
-A[User Question]
+A[👤 User Query]
 
 A --> B[🧠 Router Agent]
 
@@ -141,7 +144,7 @@ B -->|PDF Only| C[📄 PDF Agent]
 
 B -->|Web Only| D[🌐 Web Agent]
 
-B -->|Hybrid| E[📄 PDF + 🌐 Web]
+B -->|Hybrid| E[📄 PDF Agent + 🌐 Web Agent]
 
 C --> F[🤖 Answer Agent]
 
@@ -151,20 +154,23 @@ E --> F
 
 F --> G[📚 Citation Agent]
 
-G --> H[Final Response]
+G --> H[✅ Final Response]
 ```
 
 ---
 
 # 📄 Parent–Child RAG Pipeline
 
-Traditional RAG often loses context when documents are divided into smaller chunks.
+Traditional RAG systems often split documents into small chunks and retrieve them directly. While this improves retrieval precision, it frequently loses the surrounding context needed for high-quality answers.
 
-OmniResearch AI solves this using a **Parent–Child Retrieval strategy**, where:
+OmniResearchAI addresses this limitation using a **Parent–Child Retrieval Pipeline**.
+
+### How it works
 
 - Large **Parent Chunks** preserve semantic context.
-- Smaller **Child Chunks** improve retrieval precision.
-- Retrieved child chunks reconstruct their corresponding parent chunks before answer generation.
+- Smaller **Child Chunks** are generated from each parent.
+- Only child chunks are embedded and indexed.
+- During retrieval, relevant child chunks reconstruct their corresponding parent chunks before answer generation.
 
 ```mermaid
 flowchart LR
@@ -175,13 +181,13 @@ A --> B[Parent Chunking]
 
 B --> C[Child Chunking]
 
-C --> D[Embedding Generation]
+C --> D[Sentence Transformer Embeddings]
 
 D --> E[(ChromaDB)]
 
 F[User Query]
 
-F --> G[Embedding]
+F --> G[Query Embedding]
 
 G --> E
 
@@ -200,9 +206,11 @@ L --> M[Final Answer]
 
 ---
 
-# 🔍 Hybrid Retrieval Strategy
+# 🔍 Semantic Retrieval Strategy
 
-Instead of relying on a single retrieval method, OmniResearch AI combines **dense semantic search** with **lexical keyword matching**.
+OmniResearchAI uses a **dense semantic retrieval pipeline** powered by **Sentence Transformers** and **ChromaDB**.
+
+Instead of retrieving entire documents directly, the system searches over embedded child chunks, reconstructs their parent chunks, and provides rich contextual information to the language model.
 
 ### Retrieval Pipeline
 
@@ -216,51 +224,53 @@ Sentence Transformer Embedding
 Semantic Search (ChromaDB)
       │
       ▼
-BM25 Keyword Search
-      │
-      ▼
-Score Fusion
-      │
-      ▼
-Best Child Chunks
+Top-K Child Chunks
       │
       ▼
 Parent Reconstruction
       │
       ▼
+Context Building
+      │
+      ▼
 Gemini Response
+      │
+      ▼
+Citation Generation
 ```
 
-### Why Hybrid Retrieval?
+### Why Parent–Child Retrieval?
 
-| Semantic Search | BM25 Search |
-|-----------------|------------|
-| Understands meaning | Matches exact keywords |
-| Handles paraphrased queries | Excellent for technical terms |
-| Captures semantic similarity | Improves precision |
-| May miss exact terminology | Complements dense retrieval |
+| Traditional Chunk Retrieval | Parent–Child Retrieval |
+|----------------------------|-------------------------|
+| Retrieves isolated chunks | Retrieves complete contextual sections |
+| Context may be fragmented | Context is preserved |
+| Better retrieval precision | Better retrieval precision **and** answer quality |
+| Smaller context window | Rich document-level understanding |
+| Suitable for simple QA | Ideal for research and technical documentation |
 
-Combining both retrieval methods results in significantly more reliable document retrieval compared to using either technique alone.
+By reconstructing parent chunks before LLM inference, OmniResearchAI preserves document structure while maintaining precise semantic retrieval, resulting in more coherent and reliable responses.
+
 # 🚀 Project Development Journey
 
-The project was developed incrementally, with each stage improving the retrieval quality, modularity, and overall intelligence of the system.
+The project was developed incrementally, with each phase improving retrieval quality, scalability, and overall intelligence of the system.
 
 | Phase | Description |
 |-------|-------------|
-| 📄 PDF Parsing | Extracted structured text from uploaded PDF documents. |
-| ✂️ Parent Chunking | Split documents into large contextual chunks to preserve semantic meaning. |
-| 🧩 Child Chunking | Further divided parent chunks into smaller retrieval units for higher precision. |
-| 🧠 Embedding Generation | Generated dense vector representations using Sentence Transformers. |
-| 🗂️ Vector Storage | Stored child embeddings in ChromaDB while maintaining parent-child relationships. |
-| 🔍 Hybrid Retrieval | Combined semantic search with BM25 keyword retrieval for improved accuracy. |
-| 📑 Parent Reconstruction | Reconstructed complete parent chunks from retrieved child chunks before LLM inference. |
-| 🤖 Gemini Integration | Generated natural language responses using Google's Gemini model. |
-| 🌐 Web Search | Added Tavily-powered web retrieval for answering real-time and out-of-document queries. |
-| 🧠 Multi-Agent Architecture | Introduced Router, PDF, Web, Answer, and Citation agents for modular execution. |
-| 📚 Citation System | Attached document and web references to improve transparency and trustworthiness. |
-| 🎨 User Interface | Built an interactive Streamlit frontend with document upload and chat capabilities. |
-| ⚡ Backend API | Developed a FastAPI backend for scalable request handling. |
-| ☁️ Cloud Deployment | Prepared the application for deployment on Railway and Streamlit Community Cloud. |
+| 📄 PDF Parsing | Extracted clean text from uploaded PDF documents using PyPDF. |
+| ✂️ Parent Chunking | Split documents into large contextual parent chunks. |
+| 🧩 Child Chunking | Further divided parent chunks into smaller retrieval units. |
+| 🧠 Embedding Generation | Generated dense embeddings using Sentence Transformers (all-MiniLM-L6-v2). |
+| 🗂️ Vector Storage | Stored child embeddings inside ChromaDB while preserving parent-child relationships. |
+| 📑 Parent Reconstruction | Reconstructed complete parent chunks before LLM inference. |
+| 🤖 Gemini Integration | Integrated Google's Gemini model for response generation. |
+| 🌐 Web Search | Added Tavily-powered live web retrieval for up-to-date information. |
+| 🧭 Router Agent | Built an intelligent Router Agent to choose between PDF, Web, or Hybrid execution. |
+| 📚 Citation System | Added document and web citations for every generated answer. |
+| 💬 Conversational Memory | Maintained previous conversation history for follow-up questions. |
+| 🎨 User Interface | Developed an interactive Streamlit frontend. |
+| ⚡ Backend API | Implemented FastAPI backend for document indexing and querying. |
+| ☁️ Cloud Deployment | Deployed the frontend on Streamlit Community Cloud and backend on Railway. |
 
 ---
 
@@ -272,12 +282,13 @@ The project was developed incrementally, with each stage improving the retrieval
 | **Frontend** | Streamlit |
 | **Backend** | FastAPI |
 | **LLM** | Google Gemini |
-| **Embeddings** | Sentence Transformers |
+| **Embeddings** | Sentence Transformers (all-MiniLM-L6-v2) |
 | **Vector Database** | ChromaDB |
-| **Document Processing** | LangChain |
-| **Retrieval** | Parent–Child RAG + Hybrid Retrieval (Semantic + BM25) |
+| **Document Processing** | LangChain Text Splitters + PyPDF |
+| **Retrieval** | Parent–Child RAG |
+| **Semantic Search** | ChromaDB Dense Vector Search |
 | **Web Search** | Tavily API |
-| **API Validation** | Pydantic |
+| **Conversation Memory** | Custom Memory Module |
 | **Deployment** | Railway • Streamlit Community Cloud |
 | **Version Control** | Git & GitHub |
 
@@ -324,29 +335,10 @@ OmniResearchAI
 ├── 📖 README.md                    # Project documentation
 ├── 📜 LICENSE                      # MIT License
 ├── 🔒 .gitignore                   # Git ignore rules
-├── 🔑 .env                         # Environment variables (local only)
-└── 🐍 venv/                        # Virtual environment (ignored by Git)
 ```
 
 ---
 
-# 🎯 Why Parent–Child RAG?
-
-Most traditional RAG systems directly embed small document chunks.
-
-While this improves retrieval speed, it often loses the surrounding context required for generating accurate answers.
-
-OmniResearch AI addresses this limitation by introducing a **Parent–Child Retrieval Pipeline**.
-
-### Benefits
-
-- 📖 Preserves document context
-- 🎯 Retrieves smaller, highly relevant chunks
-- 🔄 Reconstructs larger contextual sections before LLM inference
-- 📚 Produces more coherent and reliable answers
-- 🚀 Scales efficiently for large document collections
-
-This architecture significantly improves answer quality compared to conventional chunk-based RAG systems.
 # ⚙️ Installation
 
 ## 1️⃣ Clone the Repository
@@ -359,7 +351,7 @@ cd OmniResearchAI
 
 ---
 
-## 2️⃣ Create Virtual Environment
+## 2️⃣ Create a Virtual Environment
 
 ### Windows
 
@@ -399,7 +391,7 @@ TAVILY_API_KEY=YOUR_TAVILY_API_KEY
 
 ---
 
-## 5️⃣ Start Backend
+## 5️⃣ Start the Backend
 
 ```bash
 cd backend
@@ -407,7 +399,7 @@ cd backend
 uvicorn app:app --reload
 ```
 
-Backend will run at
+Backend will run at:
 
 ```
 http://localhost:8000
@@ -415,7 +407,7 @@ http://localhost:8000
 
 ---
 
-## 6️⃣ Start Frontend
+## 6️⃣ Start the Frontend
 
 Open another terminal.
 
@@ -425,7 +417,7 @@ cd frontend
 streamlit run streamlit_app.py
 ```
 
-Frontend will run at
+Frontend will run at:
 
 ```
 http://localhost:8501
@@ -433,42 +425,36 @@ http://localhost:8501
 
 ---
 
-# 🚀 Deployment
+# 🌐 Live Demo
 
-| Service | Platform |
-|----------|----------|
-| Frontend | Streamlit Community Cloud |
-| Backend | Railway |
-| Version Control | GitHub |
+**🚀 Live Application**
 
-> **Live Demo URLs**
+https://omniresearchai.streamlit.app/
 
-**🌐 Frontend**
-
-```
-Coming Soon
-```
-
-**⚡ Backend API**
-
-```
-Coming Soon
-```
+> **Note**
+>
+> The backend is hosted on **Railway (Free Tier)**.
+> If the backend is idle, Railway may put it to sleep.
+> The first request can therefore take **30–60 seconds** while the backend wakes up.
 
 ---
 
 # 📈 Future Improvements
 
+The current system is designed with a modular architecture, making it easy to extend with additional capabilities.
+
+Future enhancements include:
+
 - 📄 OCR support for scanned PDFs
-- 🖼️ Image-aware document retrieval
-- 🧠 Agentic planning with autonomous reasoning
-- 💾 Long-term conversation memory
-- 👥 User authentication
-- 📊 Analytics dashboard
+- 🖼️ Image-aware document understanding
+- 🧠 Advanced agentic planning and reasoning
+- 💾 Persistent long-term conversation memory
+- 👥 User authentication and workspace management
+- 📊 Usage analytics dashboard
 - ☁️ Cloud storage integration
-- 🐳 Docker support
-- 🤖 Local LLM compatibility
-- 📱 Mobile-responsive interface
+- 🐳 Docker containerization
+- 🤖 Local LLM compatibility (Ollama / vLLM)
+- 📱 Fully responsive mobile interface
 
 ---
 
@@ -476,10 +462,10 @@ Coming Soon
 
 ## Shubham Sharma
 
-**Aspiring AI Engineer | Machine Learning Enthusiast**
+*Aspiring AI Engineer | Machine Learning Enthusiast*
 
-📧 **Email:** shubham789keeds@gmail.com
+📧 *Email:* shubham789keeds@gmail.com
 
-💼 **LinkedIn:** [Shubham Sharma](https://www.linkedin.com/in/shubhammm27/)
+💼 *LinkedIn:* [Shubham Sharma](https://www.linkedin.com/in/shubhammm27/)
 
 ---
